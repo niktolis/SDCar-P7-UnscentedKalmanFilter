@@ -3,3 +3,6 @@
 
 # build files
 build/
+
+#ide profiles
+ide_profiles/
