@@ -24,6 +24,9 @@ public:
   */
   VectorXd CalculateRMSE(const vector<VectorXd> &estimations, const vector<VectorXd> &ground_truth);
 
+private:
+  VectorXd product_sum_;
 };
+
 
 #endif /* TOOLS_H_ */
