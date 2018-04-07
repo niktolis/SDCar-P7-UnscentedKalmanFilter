@@ -73,6 +73,9 @@ public:
   double lambda_;
 
 private:
+  /*! * Process noise covariance matrix */
+  MatrixXd Q_;
+
   /*! * Radar measurement noise covariance matrix */
   MatrixXd R_r_;
   
@@ -84,6 +87,12 @@ private:
   
   /*! * previous timestamp */
   long long previous_timestamp_;
+
+  /*! * Radar NIS */
+  double NIS_r_;
+
+  /*! * Laser NIS */
+  double NIS_l_;
 
 public:
 
@@ -106,6 +115,8 @@ public:
    * @param delta_t Time between k and k+1 in s.
    */
   void Prediction(double delta_t);
+
+  void UpdateCommon(MeasurementPackage meas_package, MatrixXd Zsig, int n_z);
 
   /*!
    * Updates the state and the state covariance matrix using a laser measurement
