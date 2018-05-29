@@ -5,6 +5,7 @@
 #include "Eigen/Dense"
 #include <vector>
 #include <string>
+#include <iostream>
 #include <fstream>
 
 using Eigen::MatrixXd;
@@ -93,6 +94,9 @@ private:
 
   /*! * Laser NIS */
   double NIS_l_;
+
+  std::ofstream radarNis_;
+  std::ofstream laserNis_;
 
 public:
 

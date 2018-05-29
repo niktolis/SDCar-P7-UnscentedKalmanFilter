@@ -1,6 +1,5 @@
 #include "ukf.h"
 #include "Eigen/Dense"
-#include <iostream>
 #include <math.h>
 
 using namespace std;
@@ -48,8 +47,8 @@ UKF::UKF() {
   // Initialize covariance matrix.
   P_ << 1, 0, 0, 0, 0,
     0, 1, 0, 0, 0,
-    0, 0, 1, 0, 0,
-    0, 0, 0, 1, 0,
+    0, 0, 10, 0, 0,
+    0, 0, 0, 10, 0,
     0, 0, 0, 0, 1;
 
   // Dimension of the state vector.
@@ -87,6 +86,14 @@ UKF::UKF() {
   R_l_ = MatrixXd(2, 2);
   R_l_ << std_laspx_ * std_laspx_, 0,
     0, std_laspy_ * std_laspy_;
+
+  radarNis_.open("../RadarNis.csv");
+  radarNis_ << "timestamp, NIS_radar, x^2.050 \n";
+  radarNis_.close();
+
+  laserNis_.open("../LaserNis.csv");
+  laserNis_ << "timestamp, NIS_laser, x^2.050 \n";
+  laserNis_.close();
 
   // force initialization.
   is_initialized_ = false;
@@ -157,16 +164,17 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 
       // Radar updates
       this->UpdateRadar(meas_package);
-
+      radarNis_.open("../RadarNis.csv", ios::app);
+      radarNis_ << previous_timestamp_/100000 << "," << NIS_r_ << "," << 7.815 << "\n";
+      radarNis_.close();
     } else if(meas_package.sensor_type_ == MeasurementPackage::LASER && use_laser_) {
-
       // Laser updates
       this->UpdateLidar(meas_package);
+      laserNis_.open("../LaserNis.csv", ios::app);
+      laserNis_ << previous_timestamp_/100000 << "," << NIS_l_ << "," << 5.991 << "\n";
+      laserNis_.close();
     }
-
   }
-  
-  
 }
 
 /**
@@ -228,7 +236,7 @@ void UKF::Prediction(double delta_t) {
     // predicted state values.
     double px_p, py_p;
 
-    if(yawd != 0) {
+    if(fabs(yawd) > 0.001) {
       px_p = px + v / yawd * (sin(yaw_p) - sin(yaw));
       py_p = py + v / yawd * (cos(yaw) - cos(yaw_p));
     } else {
@@ -353,8 +361,6 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
 
   // calculate NIS.
   NIS_l_ = z_diff.transpose() * S.inverse() * z_diff;
-
-  cout << "NIS_l_: " << NIS_r_ << endl << endl;
 }
 
 /**
@@ -450,7 +456,6 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   // calculate NIS.
   NIS_r_ = z_diff.transpose() * S.inverse() * z_diff;
 
-  cout << "NIS_r_: " << NIS_r_ << endl << endl;
 }
 
 double UKF::NormalizeAngle(double phi) {
