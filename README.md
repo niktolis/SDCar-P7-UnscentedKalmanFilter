@@ -107,6 +107,4 @@ And here are the printed values of the NIS for both sensors again:
 ![alt text][image5]
 ![alt text][image6]
 
-## Comparison to EKF
-
 
