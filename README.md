@@ -1,7 +1,7 @@
 [//]: # (Image References)
 
-[image1]: ./screenshots/Dataset1.png "Dataset1 Performance"
-[image2]: ./screenshots/Dataset2.png "Dataset2 Performance"
+[image1]: ./screenshots/Dataset1.PNG "Dataset1 Performance"
+[image2]: ./screenshots/Dataset2.PNG "Dataset2 Performance"
 [image3]: ./screenshots/LaserNIS_Dataset1.png "Laser NIS of Dataset 1"
 [image4]: ./screenshots/RadarNIS_Dataset1.png "Radar NIS of Dataset 1"
 [image5]: ./screenshots/LaserNIS_Dataset2.png "Laser NIS of Dataset 2"
